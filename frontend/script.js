@@ -1,29 +1,48 @@
-// Wait for the DOM to load before running the script
 document.addEventListener("DOMContentLoaded", function () {
-    // Get elements by ID
-    const emailText = document.getElementById("emailText");
-    const submitBtn = document.getElementById("submitBtn");
-    const resultDiv = document.getElementById("result");
+    document.getElementById('checkSpamButton').addEventListener('click', function () {
+        const emailText = document.getElementById('emailInput').value;
 
-    // Add event listener to the button
-    submitBtn.addEventListener("click", function () {
-        let text = emailText.value.trim(); // Get the input text and trim spaces
-
-        if (text === "") {
-            resultDiv.innerHTML = "<p style='color: red;'>Please enter an email text!</p>";
+        // Check if input is empty
+        if (!emailText.trim()) {
+            showError("Please enter an email before checking.");
             return;
         }
 
-        // Dummy spam words list (for frontend testing only)
-        let spamWords = ["win", "prize", "free", "money", "offer", "click", "subscribe"];
-
-        // Check if input contains spam words
-        let isSpam = spamWords.some(word => text.toLowerCase().includes(word));
-
-        if (isSpam) {
-            resultDiv.innerHTML = "<p style='color: red; font-weight: bold;'>🚨 This email looks like spam!</p>";
-        } else {
-            resultDiv.innerHTML = "<p style='color: green; font-weight: bold;'>✅ This email seems safe.</p>";
-        }
+        fetch('http://127.0.0.1:5000/predict', {  // Make sure backend is running
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: emailText })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            showResult(data.prediction);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError("Error connecting to the server. Make sure the backend is running.");
+        });
     });
 });
+
+// Function to display the result
+function showResult(prediction) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `✅ Prediction: <strong>${prediction}</strong>`;
+    resultDiv.style.color = 'green';
+    resultDiv.style.display = 'block';
+}
+
+// Function to display errors
+function showError(message) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = `❌ ${message}`;
+    resultDiv.style.color = 'red';
+    resultDiv.style.display = 'block';
+}
