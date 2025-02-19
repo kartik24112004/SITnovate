@@ -21,6 +21,12 @@ test_messages = [
     "Hey, can we meet tomorrow for the project discussion?",
     "Exclusive offer just for you! Get a discount now.",
 ]
+# Save the model and vectorizer
+joblib.dump(model, "spam_model.pkl")
+joblib.dump(vectorizer, "vectorizer.pkl")
+
+print("Model and vectorizer saved successfully!")
+
 
 # Run predictions
 for msg in test_messages:
