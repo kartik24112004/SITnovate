@@ -1,0 +1,148 @@
+/* Global reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #6a11cb, #2575fc); /* Nice gradient background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  min-height: 100vh;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  background-color: #f8f8f8;
+  padding: 20px;
+  border: 2px solid #000
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 50%%;
+  max-width: 600px;
+  margin: auto;
+  transform: translateY(-10px);
+  animation: popIn 0.5s ease-in-out;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+textarea {
+  width: 80%;
+  height: 100px;
+  margin-bottom: 10px
+  padding: 15px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  outline: none;
+  resize: none;
+  transition: border-color 0.3s ease;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+textarea:focus {
+  border-color: #2575fc;
+  background-color: #fff;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 1.1rem;
+  color: white;
+  background-color: #008CBA;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #6a11cb;
+  transform: translateY(-5px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.result {
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.spam {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.not-spam {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Animation for the container and result */
+@keyframes popIn {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  textarea {
+    height: 150px;
+  }
+
+  button {
+    padding: 12px 25px;
+    font-size: 1rem;
+  }
+}
+.error {
+  background-color: #ff4747;
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}

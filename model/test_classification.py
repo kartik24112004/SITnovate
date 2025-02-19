@@ -1,17 +1,55 @@
+import pandas as pd
+import re
+import string
+import nltk
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score
 import joblib
 
-print("Loading vectorizer and model...")
-vectorizer = joblib.load("vectorizer_test.pkl")
-model = joblib.load("spam_model.pkl")
-print("Vectorizer and model loaded successfully.")
+# Load Dataset
+df = pd.read_csv("spam.csv", encoding="latin-1")
 
-sample_text = ["You won a lottery! Claim your prize now."]
-print("Sample text:", sample_text)
+# Keep only necessary columns
+df = df.iloc[:, [0, 1]]
+df.columns = ['label', 'message']
 
-X_test = vectorizer.transform(sample_text)
-print("Transformed text shape:", X_test.shape)
+# Convert labels to binary (ham = 0, spam = 1)
+df['label'] = df['label'].map({'ham': 0, 'spam': 1})
 
-prediction = model.predict(X_test)
-print("Raw prediction output:", prediction)
+# Download stopwords if not already downloaded
+nltk.download('stopwords')
+stop_words = set(stopwords.words('english'))
 
-print("Prediction:", "Spam" if prediction[0] == 1 else "Not Spam")
+# Text Preprocessing
+def clean_text(text):
+    text = text.lower()
+    text = re.sub(f"[{string.punctuation}]", "", text)
+    text = " ".join(word for word in text.split() if word not in stop_words)
+    return text
+
+df['message'] = df['message'].apply(clean_text)
+
+# Convert Text to Numeric Features
+vectorizer = TfidfVectorizer()
+X = vectorizer.fit_transform(df['message'])
+y = df['label']
+
+# Split Data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train Model
+model = MultinomialNB()
+model.fit(X_train, y_train)
+
+# Evaluate Model
+y_pred = model.predict(X_test)
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.2f}")
+
+# Save Model and Vectorizer
+joblib.dump(model, "spam_model.pkl")
+print("Model saved as spam_model.pkl")
+joblib.dump(vectorizer, "vectorizer.pkl")
+print("Vectorizer saved as vectorizer.pkl")
