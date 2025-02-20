@@ -1,5 +1,6 @@
 Flask
 Flask-CORS
 firebase-admin
+gunicorn
 joblib
 scikit-learn
