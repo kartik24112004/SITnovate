@@ -10,6 +10,16 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import joblib
 import os
 import numpy as np
+from nltk.stem import PorterStemmer
+
+stemmer = PorterStemmer()
+
+def clean_text(text):
+    text = text.lower()
+    text = re.sub(f"[{string.punctuation}]", "", text)  # Remove punctuation
+    words = text.split()
+    words = [stemmer.stem(word) for word in words if word not in stop_words]  # Apply stemming
+    return " ".join(words)
 
 # Ensure stopwords are downloaded
 nltk.download("stopwords", quiet=True)
