@@ -1,0 +1,5 @@
+Flask
+Flask-CORS
+firebase-admin
+joblib
+scikit-learn

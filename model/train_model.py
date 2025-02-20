@@ -10,6 +10,11 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import joblib
 import os
 import numpy as np
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 7ae3501e94362588c93b4434b2de01389d6f7b5c
 from nltk.stem import PorterStemmer
 
 stemmer = PorterStemmer()
@@ -20,6 +25,10 @@ def clean_text(text):
     words = text.split()
     words = [stemmer.stem(word) for word in words if word not in stop_words]  # Apply stemming
     return " ".join(words)
+<<<<<<< HEAD
+>>>>>>> 7ae3501e94362588c93b4434b2de01389d6f7b5c
+=======
+>>>>>>> 7ae3501e94362588c93b4434b2de01389d6f7b5c
 
 # Ensure stopwords are downloaded
 nltk.download("stopwords", quiet=True)
@@ -36,7 +45,15 @@ df.columns = ["label", "message"]
 # Convert labels to binary (ham = 0, spam = 1)
 df["label"] = df["label"].map({"ham": 0, "spam": 1})
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+# Check label distribution (Now `df` is defined)
+=======
 # Check label distribution (Now df is defined)
+>>>>>>> 7ae3501e94362588c93b4434b2de01389d6f7b5c
+=======
+# Check label distribution (Now df is defined)
+>>>>>>> 7ae3501e94362588c93b4434b2de01389d6f7b5c
 unique, counts = np.unique(df["label"], return_counts=True)
 print(dict(zip(unique, counts)))  # Check spam (1) vs. ham (0) ratio
 
