@@ -50,7 +50,7 @@ def clean_text(text):
 df["message"] = df["message"].apply(clean_text)
 
 # Convert Text to Numeric Features
-vectorizer = TfidfVectorizer()
+vectorizer = TfidfVectorizer(max_features=5000, stop_words="english")
 X = vectorizer.fit_transform(df["message"])
 y = df["label"]
 
