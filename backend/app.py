@@ -1,11 +1,19 @@
 import os
 import joblib
+import json
 
 import firebase_admin
 from firebase_admin import credentials, firestore
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+firebase_cred_json = os.getenv("FIREBASE_CRED_JSON")
+
+if firebase_cred_json:
+    cred = credentials.Certificate(json.loads(firebase_cred_json))
+    firebase_admin.initialize_app(cred)
+else:
+    raise ValueError("Firebase credentials not found in environment variables")
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS to allow frontend communication
