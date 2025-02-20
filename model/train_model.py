@@ -9,21 +9,26 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import joblib
 import os
+import numpy as np
 
 # Ensure stopwords are downloaded
-nltk.download("stopwords")
+nltk.download("stopwords", quiet=True)
 stop_words = set(stopwords.words("english"))
 
-# Load Dataset
-csv_path ="C:\Users\Hp\Desktop\SITnovate\model\spam.csv"  # Update this path
+# Load Dataset (Fix file path issue)
+csv_path = r"C:\Users\Hp\Desktop\SITnovate\model\spam.csv"  # Use raw string (r"...")
 df = pd.read_csv(csv_path, encoding="latin-1")
 
-# Keep only necessary columns
+# Keep only necessary columns (Check if correct columns exist)
 df = df.iloc[:, [0, 1]]
 df.columns = ["label", "message"]
 
 # Convert labels to binary (ham = 0, spam = 1)
 df["label"] = df["label"].map({"ham": 0, "spam": 1})
+
+# Check label distribution (Now df is defined)
+unique, counts = np.unique(df["label"], return_counts=True)
+print(dict(zip(unique, counts)))  # Check spam (1) vs. ham (0) ratio
 
 # Text Preprocessing Function
 def clean_text(text):
@@ -54,7 +59,7 @@ print(f"Recall: {recall_score(y_test, y_pred):.2f}")
 print(f"F1 Score: {f1_score(y_test, y_pred):.2f}")
 
 # Save Model and Vectorizer
-save_dir = "C:/Users/Hp/Desktop/SITnovate/model"
+save_dir = r"C:\Users\Hp\Desktop\SITnovate\model"
 os.makedirs(save_dir, exist_ok=True)  # Create directory if not exists
 
 joblib.dump(model, os.path.join(save_dir, "spam_model.pkl"))
